@@ -10,7 +10,7 @@
     <ClCompile Include="source/Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source/StrutWithBitfields.cpp">
+    <ClCompile Include="source\StructWithBitfields.h">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

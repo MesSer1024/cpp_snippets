@@ -122,7 +122,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source/Source.cpp" />
-    <ClCompile Include="source/StrutWithBitfields.cpp" />
+    <ClCompile Include="source\StructWithBitfields.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
