@@ -1,10 +1,10 @@
 #pragma once
 
 #include "BaseTypes.h"
-#include "Utility.h"
 #include <vector>
 #include <algorithm>
 #include <functional>
+#include "ContainerFunctionality.h"
 
 // This code is meant to serve as an example to show when the different constructors and assignment operators are invoked and what might affect it [noexcept]
 inline void writeCommand(const char* str) { printf("\n%s\n", str); }
@@ -108,6 +108,8 @@ struct ComplexElement
 		InnerType() = default;
 		InnerType(const InnerType& other) = default;
 		InnerType(InnerType&& other) = delete;
+		void operator=(const InnerType& other) = delete;
+		void operator=(InnerType&& other) = delete;
 	};
 	InnerType complexInnerData;
 	u32 dummyData;
@@ -127,24 +129,32 @@ struct ComplexElement
 	{
 		write("X&");
 		dummyData = other.dummyData;
+		complexInnerData.integers = other.complexInnerData.integers;
+		complexInnerData.things = other.complexInnerData.things;
 	}
 
 	ComplexElement(ComplexElement&& other) noexcept
 	{
 		write("X&&");
 		dummyData = other.dummyData;
+		complexInnerData.integers = std::move(other.complexInnerData.integers);
+		complexInnerData.things = other.complexInnerData.things;
 	}
 
 	void operator=(const ComplexElement& other)
 	{
 		write("X=&");
 		dummyData = other.dummyData;
+		complexInnerData.integers = other.complexInnerData.integers;
+		complexInnerData.things = other.complexInnerData.things;
 	}
 
 	void operator=(ComplexElement&& other) noexcept
 	{
 		write("X=&&");
 		dummyData = other.dummyData;
+		complexInnerData.integers = std::move(other.complexInnerData.integers);
+		complexInnerData.things = other.complexInnerData.things;
 	}
 };
 
@@ -207,6 +217,7 @@ struct VectorExample
 
 	TupleState cloneToOutput()
 	{
+		write("\n");
 		return { _naives, _corrects, _complex };
 	}
 
@@ -222,23 +233,12 @@ struct VectorExample
 	{
 		writeCommand("unstableEraseUsingPartition");
 
-		{
-			auto pivot = std::partition(_naives.begin(), _naives.end(), std::not_fn(predicate));
-			const u32 newSize = static_cast<u32>(std::distance(_naives.begin(), pivot));
-			_naives.resize(newSize);
-		}
+		containers::unstableEraseUsingPartition(_naives, predicate);
 		write("\n");
-		{
-			auto pivot = std::partition(_corrects.begin(), _corrects.end(), std::not_fn(predicate));
-			const u32 newSize = static_cast<u32>(std::distance(_corrects.begin(), pivot));
-			_corrects.resize(newSize);
-		}
+		containers::unstableEraseUsingPartition(_corrects, predicate);
 		write("\n");
-		{
-			auto pivot = std::partition(_complex.begin(), _complex.end(), std::not_fn(predicate));
-			const u32 newSize = static_cast<u32>(std::distance(_complex.begin(), pivot));
-			_complex.resize(newSize);
-		}
+		containers::unstableEraseUsingPartition(_complex, predicate);
+		write("\n");
 	}
 
 	template<typename Predicate>
@@ -246,20 +246,12 @@ struct VectorExample
 	{
 		writeCommand("unstableEraseUsingLoop");
 
-		{
-			auto newSize = utility::unstableEraseUsingLoop(_naives, predicate);
-			_naives.resize(newSize);
-		}
+		containers::unstableEraseUsingLoop(_naives, predicate);
 		write("\n");
-		{
-			auto newSize = utility::unstableEraseUsingLoop(_corrects, predicate);
-			_corrects.resize(newSize);
-		}
+		containers::unstableEraseUsingLoop(_corrects, predicate);
 		write("\n");
-		{
-			auto newSize = utility::unstableEraseUsingLoop(_complex, predicate);
-			_complex.resize(newSize);
-		}
+		containers::unstableEraseUsingLoop(_complex, predicate);
+		write("\n");
 	}
 
 	void printEntries()
@@ -300,27 +292,27 @@ inline void runVectorExample()
 	wrapper.resizeTo(19);
 	wrapper.resizeTo(10);
 
-	writeDescription("[shrinkToFit] might move elements into a specific memory area with exact size (TODO: INSERT_LINK_TO_STANDARD)");
+	writeDescription("[shrinkToFit] MIGHT move elements into a (smaller) memory location with exact size"); // iirc the exact requirement of this behavior is not mentioned inside standard, TODO: LINK_TO_STANDARD
 	wrapper.shrinkToFit();
 	wrapper.resizeTo(5);
 	wrapper.shrinkToFit();
 	wrapper.shrinkToFit();
 
-	writeDescription("[erase] will use assignment operator");
+	writeDescription("[erase] will use assignment operator [operator=(T&&)]");
 	wrapper.resizeTo(10);
 	wrapper.eraseFromFront(2);
 
-	writeDescription("[cloneToOutput] will use copy operator");
+	writeDescription("[cloneToOutput] will use copy constructor [T(const T&)]");
 	wrapper.resizeTo(10);
 	auto state = wrapper.cloneToOutput();
 
-	writeDescription("[unstableEraseIf] will use assignment operator");
+	writeDescription("[unstableEraseIf] will use assignment operator [operator=(T&&)] (removing entries 4, 25)");
 	wrapper.unstableEraseUsingPartition([](auto&& a) -> bool { return a.dummyData == 4 || a.dummyData == 25; });
 
-	writeDescription("[populateByMove] will use MoveConstructor");
+	writeDescription("[populateByMove] _myVec = std::move(other); [only the elements going out of scope are destructed]");
 	wrapper.populateByMove(std::move(state));
 
-	writeDescription("[unstableEraseUsingLoop] will use assignment operator");
+	writeDescription("[unstableEraseUsingLoop] will use assignment operator [operator=(T&&)] (removing entries 4, 25)");
 	wrapper.unstableEraseUsingLoop([](auto&& a) -> bool { return a.dummyData == 4 || a.dummyData == 25; });
 
 	wrapper.printEntries();

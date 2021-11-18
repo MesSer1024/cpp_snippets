@@ -13,7 +13,7 @@
     <ClCompile Include="source\StructWithBitfields.h">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\UtilityTests.cpp">
+    <ClCompile Include="source\ContainerFunctionality.h">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -27,7 +27,7 @@
     <ClInclude Include="source\Meta.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\Utility.h">
+    <ClInclude Include="source\Zip.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

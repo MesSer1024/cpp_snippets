@@ -121,12 +121,12 @@
   <ItemGroup>
     <ClInclude Include="source/BaseTypes.h" />
     <ClInclude Include="source\Meta.h" />
-    <ClInclude Include="source\Utility.h" />
+    <ClInclude Include="source\Zip.h" />
     <ClInclude Include="source\VectorBasics.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source/Source.cpp" />
-    <ClCompile Include="source\UtilityTests.cpp" />
+    <ClCompile Include="source\ContainerFunctionality.h" />
     <ClCompile Include="source\StructWithBitfields.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
