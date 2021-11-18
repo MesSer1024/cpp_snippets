@@ -1,7 +1,7 @@
 #include <iostream>
 #include "StructWithBitfields.h"
 #include "VectorBasics.h"
-#include "Meta.h"
+#include "Utility.h"
 
 void testStructWithBitfields()
 {
@@ -30,7 +30,7 @@ int main()
 
 	runVectorExample();
 
-	runMetaTests();
+	utility::runUtilityTests();
 
 	cin.get();
 	return 0;

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "BaseTypes.h"
-#include "Meta.h"
+#include "Utility.h"
 #include <vector>
 #include <algorithm>
 #include <functional>
@@ -210,7 +210,7 @@ struct VectorExample
 		return { _naives, _corrects, _complex };
 	}
 
-	void populateByMove(std::tuple<std::vector<NaiveElement>&&, std::vector<CorrectElement>&&, std::vector<ComplexElement>&&> incoming)
+	void populateByMove(TupleState&& incoming)
 	{
 		_naives = std::move(std::get<0>(incoming));
 		_corrects = std::move(std::get<1>(incoming));
@@ -246,38 +246,18 @@ struct VectorExample
 	{
 		writeCommand("unstableEraseUsingLoop");
 
-		auto loopOverContainer = [p = std::forward<Predicate>(predicate)](auto& container) {
-			const auto begin = container.begin();
-			auto it = begin;
-			auto end = container.end();
-
-			while (it != end)
-			{
-				if (p(*it))
-				{
-					auto& destination = *it;
-					auto& from = *--end;
-					destination = std::move(from);
-					continue;
-				}
-				it++;
-			}
-
-			return static_cast<u32>(std::distance(begin, end));
-		};
-
 		{
-			auto newSize = loopOverContainer(_naives);
+			auto newSize = utility::unstableEraseUsingLoop(_naives, predicate);
 			_naives.resize(newSize);
 		}
 		write("\n");
 		{
-			auto newSize = loopOverContainer(_corrects);
+			auto newSize = utility::unstableEraseUsingLoop(_corrects, predicate);
 			_corrects.resize(newSize);
 		}
 		write("\n");
 		{
-			auto newSize = loopOverContainer(_complex);
+			auto newSize = utility::unstableEraseUsingLoop(_complex, predicate);
 			_complex.resize(newSize);
 		}
 	}
