@@ -13,9 +13,18 @@
     <ClCompile Include="source\StructWithBitfields.h">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="source\MetaTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source/BaseTypes.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\VectorBasics.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Meta.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

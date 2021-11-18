@@ -1,6 +1,7 @@
 #include <iostream>
 #include "BaseTypes.h"
 
+// This problem was done during investigation between "size" of structs on different compilers
 
 enum MyEnum : u8
 {
