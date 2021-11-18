@@ -19,6 +19,7 @@ u32 size = sizeof(StructWithBitfields);
 
 u32 g_NaiveElementIndex = 0;
 u32 g_CorrectElementIndex = 0;
+u32 g_ComplexElementIndex = 0;
 
 
 int main()

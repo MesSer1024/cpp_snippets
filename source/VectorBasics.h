@@ -15,6 +15,7 @@ inline void writeDescription(const char* str) { printf("\n--------------------\n
 
 extern u32 g_NaiveElementIndex;
 extern u32 g_CorrectElementIndex;
+extern u32 g_ComplexElementIndex;
 
 struct NaiveElement
 {
@@ -102,7 +103,11 @@ struct ComplexElement
 	struct InnerType
 	{
 		std::vector<int> integers;
-		u32 things;
+		u32 things = 0;
+
+		InnerType() = default;
+		InnerType(const InnerType& other) = default;
+		InnerType(InnerType&& other) = delete;
 	};
 	InnerType complexInnerData;
 	u32 dummyData;
@@ -115,7 +120,7 @@ struct ComplexElement
 	ComplexElement()
 	{
 		write("X");
-		dummyData = g_CorrectElementIndex++;
+		dummyData = g_ComplexElementIndex++;
 	}
 
 	ComplexElement(const ComplexElement& other)
@@ -161,6 +166,8 @@ struct VectorExample
 		_naives.resize(numElements);
 		write("\n");
 		_corrects.resize(numElements);
+		write("\n");
+		_complex.resize(numElements);
 	}
 
 	void shrinkToFit()
@@ -170,6 +177,9 @@ struct VectorExample
 		_naives.shrink_to_fit();
 		write("\n");
 		_corrects.shrink_to_fit();
+		write("\n");
+
+		_complex.shrink_to_fit();
 	}
 
 	void clear()
@@ -178,6 +188,8 @@ struct VectorExample
 		_naives.clear();
 		write("\n");
 		_corrects.clear();
+		write("\n");
+		_complex.clear();
 	}
 
 	void eraseFromFront(u32 numElements)
@@ -187,17 +199,22 @@ struct VectorExample
 		_naives.erase(_naives.begin(), _naives.begin() + numElements);
 		write("\n");
 		_corrects.erase(_corrects.begin(), _corrects.begin() + numElements);
+		write("\n");
+		_complex.erase(_complex.begin(), _complex.begin() + numElements);
 	}
 
-	std::tuple<std::vector<NaiveElement>, std::vector<CorrectElement>> cloneToOutput()
+	using TupleState = std::tuple<std::vector<NaiveElement>, std::vector<CorrectElement>, std::vector<ComplexElement>>;
+
+	TupleState cloneToOutput()
 	{
-		return { _naives, _corrects };
+		return { _naives, _corrects, _complex };
 	}
 
-	void populateByMove(std::vector<NaiveElement>&& naiveElements, std::vector<CorrectElement>&& correctElements)
+	void populateByMove(std::tuple<std::vector<NaiveElement>&&, std::vector<CorrectElement>&&, std::vector<ComplexElement>&&> incoming)
 	{
-		_naives = std::move(naiveElements);
-		_corrects = std::move(correctElements);
+		_naives = std::move(std::get<0>(incoming));
+		_corrects = std::move(std::get<1>(incoming));
+		_complex = std::move(std::get<2>(incoming));
 	}
 
 	template<typename Predicate>
@@ -215,6 +232,12 @@ struct VectorExample
 			auto pivot = std::partition(_corrects.begin(), _corrects.end(), std::not_fn(predicate));
 			const u32 newSize = static_cast<u32>(std::distance(_corrects.begin(), pivot));
 			_corrects.resize(newSize);
+		}
+		write("\n");
+		{
+			auto pivot = std::partition(_complex.begin(), _complex.end(), std::not_fn(predicate));
+			const u32 newSize = static_cast<u32>(std::distance(_complex.begin(), pivot));
+			_complex.resize(newSize);
 		}
 	}
 
@@ -252,6 +275,11 @@ struct VectorExample
 			auto newSize = loopOverContainer(_corrects);
 			_corrects.resize(newSize);
 		}
+		write("\n");
+		{
+			auto newSize = loopOverContainer(_complex);
+			_complex.resize(newSize);
+		}
 	}
 
 	void printEntries()
@@ -263,6 +291,9 @@ struct VectorExample
 			printf("%u, ", e.dummyData);
 		write("\n");
 		for (auto& e : _corrects)
+			printf("%u, ", e.dummyData);
+		write("\n");
+		for (auto& e : _complex)
 			printf("%u, ", e.dummyData);
 	}
 
@@ -301,13 +332,13 @@ inline void runVectorExample()
 
 	writeDescription("[cloneToOutput] will use copy operator");
 	wrapper.resizeTo(10);
-	auto [naives, correct] = wrapper.cloneToOutput();
+	auto state = wrapper.cloneToOutput();
 
 	writeDescription("[unstableEraseIf] will use assignment operator");
 	wrapper.unstableEraseUsingPartition([](auto&& a) -> bool { return a.dummyData == 4 || a.dummyData == 25; });
 
 	writeDescription("[populateByMove] will use MoveConstructor");
-	wrapper.populateByMove(std::move(naives), std::move(correct));
+	wrapper.populateByMove(std::move(state));
 
 	writeDescription("[unstableEraseUsingLoop] will use assignment operator");
 	wrapper.unstableEraseUsingLoop([](auto&& a) -> bool { return a.dummyData == 4 || a.dummyData == 25; });
