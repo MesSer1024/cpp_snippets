@@ -27,11 +27,12 @@
 *.lib
 
 # Executables
-*.exe
+#*.exe
 *.out
 *.app
 
-# vs
-/.vs/*
-/local/*
-/x64/Debug
+# Visual Studio
+.vs/**
+
+# output files
+_local/**

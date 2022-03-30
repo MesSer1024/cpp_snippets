@@ -3,6 +3,11 @@
 #include <vector>
 #include <functional>
 #include "BaseTypes.h"
+#include "PrevImpl_module.h"
+
+namespace ddahlkvist
+{
+	PREVIMPL_PUBLIC void foo();
 
 //template <typename T>
 //struct is_array_or_vector {
@@ -24,3 +29,5 @@
 //f(T const&)
 //{
 //}
+}
+
