@@ -7,7 +7,6 @@
 
 namespace ddahlkvist
 {
-	PREVIMPL_PUBLIC void foo();
 
 //template <typename T>
 //struct is_array_or_vector {

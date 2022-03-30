@@ -99,10 +99,9 @@ struct DataWrapper
 	std::vector<int> integers;
 };
 
-static DataWrapper s_data;
-
-DataWrapper& getDataWrapperByRef()
+inline DataWrapper& getDataWrapperByRef()
 {
+	static DataWrapper s_data; // this variable should be shared across all TU
 	return s_data;
 }
 }

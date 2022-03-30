@@ -23,7 +23,6 @@ namespace ddahlkvist
 #define PREVIMPL_PUBLIC
 #endif
 
-	//#define PREVIMPL_INTERNAL PREVIMPL_PUBLIC
 #if defined(BUILD_INTERNAL_ACCESS_PREVIMPL_MODULE) || defined(BUILD_EXPORT_PREVIMPL_MODULE)
 #define PREVIMPL_INTERNAL PREVIMPL_PUBLIC
 #else
@@ -32,7 +31,6 @@ namespace ddahlkvist
 
 	namespace previmpl
 	{
-		inline u32 bind();
+		PREVIMPL_PUBLIC void executePrevimpl();
 	}
-
 }

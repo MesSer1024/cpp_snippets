@@ -29,7 +29,7 @@ int main(int argc, char** argv)
 	ddahlkvist::MainApplication application;
 	application.run();
 
-	ddahlkvist::previmpl::bind();
+	ddahlkvist::previmpl::executePrevimpl();
 
 	return 0;
 }

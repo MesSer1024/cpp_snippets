@@ -6,6 +6,7 @@
 #include <typeinfo>
 #include "PrevImpl/StructuredBindings.h"
 #include "PrevImpl/Templates.h"
+#include "PrevImpl/PrevImpl_module.h"
 
 //////////////////////////////////////////////
 // used by VectorBasics
@@ -252,16 +253,12 @@ namespace ddahlkvist
 
 }
 
-namespace ddahlkvist
-{
-	void foo() { }
-}
-
 namespace ddahlkvist::previmpl
 {
-	u32 bind() 
-	{ 
-		/* dummy funciton to make it so we export things within this module */ 
+	PREVIMPL_PUBLIC void dummy() { } // this is here to always output a .lib-file
+
+	void executePrevimpl()
+	{
 		testStructWithBitfields();
 
 		runVectorExample();
@@ -273,8 +270,5 @@ namespace ddahlkvist::previmpl
 		testStructuredBinding();
 
 		testTemplateCompileErrors();
-
-		std::cin.get();
-		return 1337;
 	}
 }
