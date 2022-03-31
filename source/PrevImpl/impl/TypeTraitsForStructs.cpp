@@ -45,6 +45,11 @@ struct POD
 
 void showcaseCoreTypeTraits()
 {
+	// AFAIK: as of 2022-03-31
+	// is_standard_layout<T> is referring to if the "memory layout" is compatible with a c generated memory layout [different accessors (public, private, protected) would allow the compiler to reorder the elements which would not guarantee stability]
+	// is_trivial<T> would specify if the data can be specified without a user specified ctor/dtor [is safe to memcpy]
+	// [DEPRECATED] is_pod<T> means both is_trivial<T> and is_standard_layout<T>, is deprecated as of c++20 and replaced with the 2 different type_traits explained above
+
 	using namespace std;
 
    cout << boolalpha;
