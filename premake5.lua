@@ -39,6 +39,7 @@ function DeclareProject(identifier, projectType)
 	
 	files { "source/" .. identifier .. "/**" }
 	includedirs { "source/" .. identifier, "source/" .. identifier .. "/Public"  }
+	defines("BUILD_" .. string.upper(identifier) .. "_EXPORT") -- example: BUILD_TEMPLATE_EXPORT
 end
 
 function DeclareTestProject(identifier)
@@ -65,6 +66,7 @@ end
 function UseOneProjectAsInternal(name)
 	links { name }
 	includedirs { "source/" .. name .. "/Public", "source/" .. name }
+	defines("BUILD_" .. string.upper(name) .. "_INTERNAL_ACCESS") -- example: BUILD_TEMPLATE_INTERNAL_ACCESS
 end
 
 function UseProjectAsInternal(...)
@@ -87,17 +89,14 @@ group ""
 -- <LibraryProjects>
 group "Library"
 	DeclareProject("Template")
-	defines { "BUILD_EXPORT_TEMPLATE_MODULE" }
 	
 group "Library/Tests"
 	DeclareTestProject("Template.Test")
 	UseProjectAsInternal("Template")
-	defines { "BUILD_INTERNAL_ACCESS_TEMPLATE_MODULE" }
 
 group "PrevImpl"
 	DeclareProject("PrevImpl")
 	AddDependency("Template")
-	defines { "BUILD_EXPORT_PREVIMPL_MODULE" }
 
 group "" -- leave Library-group
 -- </LibraryProjects>

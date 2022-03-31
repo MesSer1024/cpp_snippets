@@ -14,7 +14,7 @@ namespace ddahlkvist
 #endif
 
 #if defined(BUILD_COMPILE_DLL)
-#if defined(BUILD_EXPORT_PREVIMPL_MODULE)
+#if defined(BUILD_PREVIMPL_EXPORT)
 #define PREVIMPL_PUBLIC EXPORT_DLL
 #else
 #define PREVIMPL_PUBLIC IMPORT_DLL
@@ -23,7 +23,7 @@ namespace ddahlkvist
 #define PREVIMPL_PUBLIC
 #endif
 
-#if defined(BUILD_INTERNAL_ACCESS_PREVIMPL_MODULE) || defined(BUILD_EXPORT_PREVIMPL_MODULE)
+#if defined(BUILD_PREVIMPL_INTERNAL_ACCESS) || defined(BUILD_PREVIMPL_EXPORT)
 #define PREVIMPL_INTERNAL PREVIMPL_PUBLIC
 #else
 #define PREVIMPL_INTERNAL

@@ -253,9 +253,19 @@ namespace ddahlkvist
 
 }
 
+namespace ddahlkvist
+{
+	// [a function DECLARATION is always 'extern', the keyword 'extern' does NOTHING wrt compiler for this use-case -- in contrast to for instance: extern "C"]
+	void showcaseLValueAndRValue();		// lvalue_and_rvalue.cpp
+	void showcaseCoreTypeTraits();		// TypeTraitsForStructs.cpp
+	extern void showcaseLValueAndRValue();		// lvalue_and_rvalue.cpp
+	extern void showcaseCoreTypeTraits();		// TypeTraitsForStructs.cpp
+}
+
 namespace ddahlkvist::previmpl
 {
 	PREVIMPL_PUBLIC void dummy() { } // this is here to always output a .lib-file
+
 
 	void executePrevimpl()
 	{
@@ -270,5 +280,8 @@ namespace ddahlkvist::previmpl
 		testStructuredBinding();
 
 		testTemplateCompileErrors();
+
+		showcaseLValueAndRValue();
+		showcaseCoreTypeTraits();
 	}
 }

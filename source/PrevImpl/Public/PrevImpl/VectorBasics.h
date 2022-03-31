@@ -4,7 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <functional>
-#include "ContainerFunctionality.h"
+#include "Algo.h"
 
 namespace ddahlkvist
 {
@@ -235,11 +235,11 @@ namespace ddahlkvist
 		{
 			writeCommand("unstableEraseUsingPartition");
 
-			containers::unstableEraseUsingPartition(_naives, predicate);
+			algo::unstableEraseUsingPartition(_naives, predicate);
 			write("\n");
-			containers::unstableEraseUsingPartition(_corrects, predicate);
+			algo::unstableEraseUsingPartition(_corrects, predicate);
 			write("\n");
-			containers::unstableEraseUsingPartition(_complex, predicate);
+			algo::unstableEraseUsingPartition(_complex, predicate);
 			write("\n");
 		}
 
@@ -248,11 +248,11 @@ namespace ddahlkvist
 		{
 			writeCommand("unstableEraseUsingLoop");
 
-			containers::unstableEraseUsingLoop(_naives, predicate);
+			algo::unstableEraseUsingLoop(_naives, predicate);
 			write("\n");
-			containers::unstableEraseUsingLoop(_corrects, predicate);
+			algo::unstableEraseUsingLoop(_corrects, predicate);
 			write("\n");
-			containers::unstableEraseUsingLoop(_complex, predicate);
+			algo::unstableEraseUsingLoop(_complex, predicate);
 			write("\n");
 		}
 

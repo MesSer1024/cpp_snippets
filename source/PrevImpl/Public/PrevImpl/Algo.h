@@ -7,7 +7,7 @@
 namespace ddahlkvist
 {
 
-	namespace containers
+	namespace algo
 	{
 		template<typename Container, typename Predicate>
 		u32 unstableEraseUsingLoop(Container& container, Predicate&& predicate)

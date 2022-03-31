@@ -1,21 +1,6 @@
 #include <template_lib/template_lib_module.h>
 
-namespace ddahlkvist
+namespace ddahlkvist::template_lib_module
 {
-
-namespace template_lib_module
-{
-
-void bind(void* data)
-{
-
-}
-
-unsigned int getProjectId()
-{
-	return 42;
-}
-
-}
-
+	TEMPLATE_PUBLIC void dummy() { /* Used to force generate a .lib file [requires something to be exported] */ }
 }

@@ -3,7 +3,7 @@
 namespace ddahlkvist
 {
 
-#define MSVC_COMPILER 1
+#define MSVC_COMPILER 1 // #TODO : offer support for a non-hardcoded MSVC-setting
 
 #if defined(MSVC_COMPILER)
 #define IMPORT_DLL __declspec(dllimport)
@@ -14,7 +14,7 @@ namespace ddahlkvist
 #endif
 
 #if defined(BUILD_COMPILE_DLL)
-#if defined(BUILD_EXPORT_TEMPLATE_MODULE)
+#if defined(BUILD_TEMPLATE_EXPORT)
 #define TEMPLATE_PUBLIC EXPORT_DLL
 #else
 #define TEMPLATE_PUBLIC IMPORT_DLL
@@ -23,17 +23,10 @@ namespace ddahlkvist
 #define TEMPLATE_PUBLIC
 #endif
 
-//#define TEMPLATE_INTERNAL TEMPLATE_PUBLIC
-#if defined(BUILD_INTERNAL_ACCESS_TEMPLATE_MODULE) || defined(BUILD_EXPORT_TEMPLATE_MODULE)
+#if defined(BUILD_TEMPLATE_INTERNAL_ACCESS) || defined(BUILD_TEMPLATE_EXPORT)
 #define TEMPLATE_INTERNAL TEMPLATE_PUBLIC
 #else
 #define TEMPLATE_INTERNAL
 #endif
-
-namespace template_lib_module
-{
-void bind(void* data);
-unsigned int getProjectId();
-}
 
 }
